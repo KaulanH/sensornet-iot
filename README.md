@@ -31,10 +31,21 @@ This system demonstrates how modern IoT systems collect, transmit, and visualize
 
 ---
 ## LESGO ##
-## 🗂️ Project Structure
 
 ## Setting Arduino Nano
 Your goal is to:
 Collect data from a sensor (e.g., temperature, light, motion) on your microcontroller.
 Send that data over serial or Wi-Fi (depending on the board) to your MacBook.
+## Hardware Setup
+Send temperature data from an Arduino Nano to your locally running Flask server using serial communication, and forward that data to your backend for storage or processing.
+
 POST that data to the Flask server at http://127.0.0.1:5000/sensor-data.
+
+# SensorNet IoT Backend
+
+This project reads temperature data from an Arduino (using a TMP36 sensor) and forwards the data to a Flask API backend.
+
+---
+
+## 💻 Project Structure
+
