@@ -22,8 +22,11 @@ def read_and_send():
                 print(f"Raw data received: '{line}'")  # Debug print
                 if is_float(line):
                     temperature = float(line)
-                    response = requests.post(API_URL, json={"temperature": temperature})
-                    print(f"Sent {temperature}°C to API, response code: {response.status_code}")
+                    try:
+                        response = requests.post(API_URL, json={"temperature": temperature})
+                        print(f"Sent {temperature}°F to API, response code: {response.status_code}")
+                    except requests.exceptions.RequestException as e:
+                        print(f"Failed to send data: {e}")
                 else:
                     print("Received non-numeric data, skipping...")
             time.sleep(2)

@@ -1,47 +1,43 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, jsonify, request, send_from_directory
 import sqlite3
+import os
 
 app = Flask(__name__)
-DATABASE = "sensor_data.db"
 
-def init_db():
-    with sqlite3.connect(DATABASE) as conn:
-        conn.execute("""
-        CREATE TABLE IF NOT EXISTS data (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            temperature REAL NOT NULL,
-            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-        """)
-
+# Serve index.html from frontend folder
 @app.route('/')
-def dashboard():
-    return send_from_directory('.', 'dashboard.html')
+def serve_index():
+    return send_from_directory('../frontend', 'dashboard.html')
 
-@app.route("/sensor-data", methods=["POST"])
-def receive_data():
-    data = request.get_json()
-    temperature = data.get("temperature")
-    if temperature is None:
-        return jsonify({"error": "Missing temperature value"}), 400
+# Serve any other frontend assets if you add (e.g. CSS, JS)
+@app.route('/<path:path>')
+def serve_static(path):
+    return send_from_directory('../frontend', path)
 
-    with sqlite3.connect(DATABASE) as conn:
-        conn.execute("INSERT INTO data (temperature) VALUES (?)", (temperature,))
+# Your existing sensor-data endpoints:
 
-    return jsonify({"message": "Data received"}), 201
-
-@app.route("/sensor-data", methods=["GET"])
-def get_data():
-    with sqlite3.connect(DATABASE) as conn:
-        cursor = conn.execute(
-            "SELECT id, temperature, timestamp FROM data ORDER BY timestamp DESC LIMIT 10"
-        )
-        data = [
-            {"id": row[0], "temperature": row[1], "timestamp": row[2]}
-            for row in cursor.fetchall()
-        ]
+@app.route('/sensor-data', methods=['GET'])
+def get_sensor_data():
+    conn = sqlite3.connect('sensor_data.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT id, temperature, timestamp FROM sensor_data ORDER BY id DESC LIMIT 10')
+    rows = cursor.fetchall()
+    conn.close()
+    data = [{'id': r[0], 'temperature': r[1], 'timestamp': r[2]} for r in rows]
     return jsonify(data)
 
-if __name__ == "__main__":
-    init_db()
+@app.route('/sensor-data', methods=['POST'])
+def post_sensor_data():
+    data = request.get_json()
+    temp = data.get('temperature')
+    if temp is None:
+        return jsonify({'error': 'Temperature missing'}), 400
+    conn = sqlite3.connect('sensor_data.db')
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO sensor_data (temperature, timestamp) VALUES (?, datetime("now"))', (temp,))
+    conn.commit()
+    conn.close()
+    return jsonify({'status': 'success'}), 200
+
+if __name__ == '__main__':
     app.run(debug=True)

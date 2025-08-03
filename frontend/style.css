@@ -1,0 +1,15 @@
+/* style.css */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 600px;
+  margin-top: 1em;
+}
+th, td {
+  border: 1px solid #999;
+  padding: 8px;
+  text-align: center;
+}
+th {
+  background-color: #f2f2f2;
+}
