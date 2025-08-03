@@ -13,3 +13,6 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
+
+# Ignore the SQLite database
+backend/sensor_data.db
