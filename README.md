@@ -71,3 +71,49 @@ Reads the serial data from Arduino over USB (e.g., COM3).
 Parses the temperature values.
 
 Forwards those temperature readings to the Flask backend API by making POST requests.
+
+# SensorNet IoT Dashboard
+
+## Overview
+
+This project captures temperature data from a TMP36 sensor connected to an Arduino Nano, sends it via serial to a Python backend, which exposes a RESTful API built with Flask. The data is stored in a SQLite database and displayed live on a web dashboard.
+
+## Features
+
+- Arduino TMP36 temperature sensing
+- Python serial forwarder to POST sensor data to API
+- Flask REST API with GET and POST endpoints
+- SQLite for lightweight data storage
+- Responsive web dashboard with live updating via JavaScript
+- Separation of frontend and backend concerns
+
+## Folder Structure
+/frontend
+/backend
+app.py
+serial_forwarder.py
+create_table.py
+sensor_data.db
+venv/
+
+
+## Requirements
+
+- Python 3.x
+- Flask
+- pyserial
+- SQLite3
+
+## Setup Instructions
+
+1. Clone the repo
+2. Create and activate a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # or venv\Scripts\activate on Windows
+
+pip install -r requirements.txt
+python create_table.py
+python app.py
+python serial_forwarder.py
+http://127.0.0.1:5000
