@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 import sqlite3
 
 app = Flask(__name__)
@@ -13,6 +13,10 @@ def init_db():
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
         )
         """)
+
+@app.route('/')
+def dashboard():
+    return send_from_directory('.', 'dashboard.html')
 
 @app.route("/sensor-data", methods=["POST"])
 def receive_data():
