@@ -3,6 +3,11 @@
 A full-stack project that captures environmental sensor data on a microcontroller and visualizes it in real time via a dashboard.
 
 ---
+Material Needed:
+Arduino IDE
+Arduino Nano
+USB Cable
+---
 
 ## 📦 Project Overview
 
