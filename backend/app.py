@@ -29,6 +29,7 @@ def get_sensor_data():
 @app.route('/sensor-data', methods=['POST'])
 def post_sensor_data():
     data = request.get_json()
+    print("Received POST data:", data)
     temp = data.get('temperature')
     if temp is None:
         return jsonify({'error': 'Temperature missing'}), 400
@@ -40,4 +41,5 @@ def post_sensor_data():
     return jsonify({'status': 'success'}), 200
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)
+
