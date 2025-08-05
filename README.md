@@ -122,3 +122,18 @@ python create_table.py
 python app.py
 python serial_forwarder.py
 http://127.0.0.1:5000
+
+
+## 🔧 Modes of Operation
+
+### 🌀 1. Serial via USB
+- Arduino sketch: `arduino/temp_sensor_serial.ino`
+- Python backend: `backend/serial_forwarder.py` (converts Serial to HTTP)
+- Flask app: `backend/app.py`
+- Frontend: `frontend/`
+
+### 📡 2. WiFi via HTTP
+- Arduino sketch: `arduino/r4_wifi_sender.ino` (sends directly via WiFi)
+- Flask app: `backend/app.py`
+- Frontend: `frontend/`
+- ⚠️ Do NOT run `serial_forwarder.py` in this mode
